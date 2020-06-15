@@ -8,6 +8,7 @@ def interpolate(y1, y2, x1, x2, x_val):
     print(return_val)
     return return_val
 
+
 def idealgas_P(V, T):
     # PV = RT -> P = RT/V
     gas_constant = 0.4615
@@ -49,7 +50,7 @@ iso_20C = [
 ]
 iso_20C_extrap = [
     (57.762, 2.3392),
-    (500.0, idealgas_P(500, 20 + 273.15 )),
+    (500.0, idealgas_P(500, 20 + 273.15)),
 ]
 
 iso_350C = [
@@ -58,7 +59,7 @@ iso_350C = [
     (0.008806, 16529),
     (0.05197, 5000),
     (0.28250, 1000),
-    ((26.446 + 31.063) / 2, 10),
+    (interpolate(26.446, 31.063, 300, 400, 350), 10),
 ]
 
 # T_sat = 6.97
@@ -88,8 +89,31 @@ iso_10000kPa = [
     (interpolate(0.25799, 0.28250, 300, 350, 311), 1000),
     (interpolate(26.446, 31.063, 300, 400, 311.00), 10),
 ]
-iso_500C = []
-# iso_1000C = []
+
+iso_500C = [
+    (0.002952, 60000),
+    (0.008691, 30000),
+    (0.014793, 20000),
+    (0.020828, 15000),
+    (0.032811, 10000),
+    (0.06858, 5000),
+    (0.13999, 2500),
+    (0.35411, 1000),
+    (3.5655, 100),
+    (35.680, 10),
+]
+iso_1000C = [
+    (0.009504, 60000),
+    (0.019240, 30000),
+    (0.029020, 20000),
+    (0.038808, 15000),
+    (0.058391, 10000),
+    (0.11715, 5000),
+    (0.23466, 2500),
+    (0.58721, 1000),
+    (5.8755, 100),
+    (58.758, 10),
+]
 
 fig = plt.figure()
 plt.title("Pressure-Specific Volume Relationship for Water")
@@ -110,6 +134,14 @@ iso_350C_V_vals = list(list(zip(*iso_350C))[0])
 iso_350C_P_vals = list(list(zip(*iso_350C))[1])
 plt.plot(iso_350C_V_vals, iso_350C_P_vals, color="#FF0000")
 
+iso_500C_V_vals = list(list(zip(*iso_500C))[0])
+iso_500C_P_vals = list(list(zip(*iso_500C))[1])
+plt.plot(iso_500C_V_vals, iso_500C_P_vals, color="#C0C0C0")
+
+iso_1000C_V_vals = list(list(zip(*iso_1000C))[0])
+iso_1000C_P_vals = list(list(zip(*iso_1000C))[1])
+plt.plot(iso_1000C_V_vals, iso_1000C_P_vals, color="#800080")
+
 iso_1kPa_V_vals = list(list(zip(*iso_1kPa))[0])
 iso_1kPa_P_vals = list(list(zip(*iso_1kPa))[1])
 plt.plot(iso_1kPa_V_vals, iso_1kPa_P_vals, color="#00FFFF")
@@ -121,6 +153,9 @@ plt.plot(iso_1atm_V_vals, iso_1atm_P_vals, color="#FF00FF")
 iso_10000kPa_V_vals = list(list(zip(*iso_10000kPa))[0])
 iso_10000kPa_P_vals = list(list(zip(*iso_10000kPa))[1])
 plt.plot(iso_10000kPa_V_vals, iso_10000kPa_P_vals, color="#00FF00")
+
+
+plt.plot(vapor_dome_V_vals[10], vapor_dome_P_vals[10], color="#0000FF",marker='o')
 
 iso_20C_extrap_V_vals = list(list(zip(*iso_20C_extrap))[0])
 iso_20C_extrap_P_vals = list(list(zip(*iso_20C_extrap))[1])
@@ -135,6 +170,6 @@ plt.plot(
 )
 
 plt.legend(
-    ["Vapour Dome", "20 C", "350 C", "1 kPa", "1 atm", "10000 kPa"], loc="upper right"
+    ["Vapour Dome", "20 C", "350 C", "500 C", "1000 C", "1 kPa", "1 atm", "10000 kPa"], loc="upper right"
 )
 plt.show()
